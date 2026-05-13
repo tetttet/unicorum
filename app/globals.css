@@ -1,5 +1,29 @@
 @import "tailwindcss";
 
+@page {
+  size: A4 portrait;
+  margin: 12mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #ffffff;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  .print-sheet {
+    margin: 0;
+    width: auto;
+    max-width: none;
+    background: #ffffff;
+    box-shadow: none;
+  }
+}
+
 @keyframes success-card-in {
   0% {
     opacity: 0;

@@ -30,7 +30,7 @@ const initialFormState: ApplicationForm = {
   yearlyBudget: "",
 };
 
-const logoMaskStyle: CSSProperties = {
+export const logoMaskStyle: CSSProperties = {
   WebkitMaskImage: "url(/lg.png)",
   WebkitMaskPosition: "center",
   WebkitMaskRepeat: "no-repeat",
