@@ -80,9 +80,9 @@ export default function ConsultationFormPage() {
 
           <PrintableField label="2. Номер телефона" />
 
-          <PrintableField label="3. Специальность" />
+          <PrintableField label="3. Какую специальность рассматриваете?" />
 
-          <PrintableField label="4. Какую специальность рассматриваете?" />
+          <PrintableField label="4. В какой университет рассматривают поступить?" />
 
           <PrintableField
             label="5. В пределах какой суммы рассчитываете годовое обучение?"
