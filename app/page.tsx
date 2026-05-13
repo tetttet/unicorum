@@ -1,65 +1,272 @@
-import Image from "next/image";
+"use client";
+
+import { CSSProperties, FormEvent, useState } from "react";
+
+const roleOptions = ["Родитель", "Будущий студент"] as const;
+const budgetOptions = [
+  "До $2 000",
+  "$2 000 – $5 000",
+  "$5 000 – $10 000",
+  "$10 000+",
+  "Пока не знаем",
+] as const;
+
+type Role = (typeof roleOptions)[number];
+type YearlyBudget = (typeof budgetOptions)[number];
+
+type ApplicationForm = {
+  role: Role | "";
+  fullName: string;
+  phone: string;
+  specialty: string;
+  yearlyBudget: YearlyBudget | "";
+};
+
+const initialFormState: ApplicationForm = {
+  role: roleOptions[0],
+  fullName: "",
+  phone: "",
+  specialty: "",
+  yearlyBudget: "",
+};
+
+const logoMaskStyle: CSSProperties = {
+  WebkitMaskImage: "url(/lg.png)",
+  WebkitMaskPosition: "center",
+  WebkitMaskRepeat: "no-repeat",
+  WebkitMaskSize: "contain",
+  maskImage: "url(/lg.png)",
+  maskPosition: "center",
+  maskRepeat: "no-repeat",
+  maskSize: "contain",
+};
 
 export default function Home() {
+  const [form, setForm] = useState<ApplicationForm>(initialFormState);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+
+  const updateField = <K extends keyof ApplicationForm>(
+    field: K,
+    value: ApplicationForm[K],
+  ) => {
+    setForm((currentForm) => ({
+      ...currentForm,
+      [field]: value,
+    }));
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setStatus("idle");
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/applications", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) {
+        throw new Error("Request failed");
+      }
+
+      setForm(initialFormState);
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="relative min-h-screen overflow-hidden bg-[#eeeeee] text-[#111827]">
+      <div className="relative mx-auto flex min-h-[calc(100vh-4rem)] max-w-3xl items-center">
+        <section className="w-full rounded-3xl border border-white/80 bg-white/90 p-6 shadow-[0_24px_60px_rgba(17,24,39,0.08)] backdrop-blur-sm sm:p-8 lg:p-10">
+          <div className="space-y-3">
+            <div className="flex justify-center pb-4">
+              <div
+                aria-label="Unicorum"
+                role="img"
+                className="aspect-[2447/541] w-full max-w-[220px] bg-[#49B1F8]"
+                style={logoMaskStyle}
+              />
+            </div>
+            <div className="space-y-2">
+              <h1 className="text-[24px] font-semibold">
+                Заявка на консультацию
+              </h1>
+              <p className="max-w-2xl text-[14px] text-[#6B7280] sm:text-md">
+                Мы свяжемся с вами и поможем подобрать подходящую специальность.
+              </p>
+            </div>
+          </div>
+
+          {status === "success" ? (
+            <div className="mt-8 flex min-h-[420px] items-center justify-center">
+              <div className="success-card w-full max-w-md rounded-[28px] bg-[#F8FCFF] px-8 py-10 text-center shadow-[0_20px_50px_rgba(73,177,248,0.14)]">
+                <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-white shadow-[0_18px_40px_rgba(73,177,248,0.16)]">
+                  <svg
+                    viewBox="0 0 80 80"
+                    className="h-20 w-20"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      cx="40"
+                      cy="40"
+                      r="30"
+                      className="success-ring fill-none stroke-[#49B1F8]"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M26 41.5 35.5 51 55 31.5"
+                      className="success-check fill-none stroke-[#49B1F8]"
+                      strokeWidth="5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <h2 className="mt-6 text-[24px] font-semibold text-[#111827]">
+                  Заявка отправлена
+                </h2>
+                <p className="mt-3 text-[15px] leading-6 text-[#6B7280]">
+                  Спасибо! Мы скоро свяжемся с вами и подберем лучший вариант.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+              <fieldset className="space-y-3">
+                <legend className="text-sm font-medium text-[#111827]">
+                  Кто вы?
+                </legend>
+                <div className="grid grid-cols-2 gap-3">
+                  {roleOptions.map((roleOption) => (
+                    <label
+                      key={roleOption}
+                      className="group relative block cursor-pointer"
+                    >
+                      <input
+                        type="radio"
+                        name="role"
+                        value={roleOption}
+                        checked={form.role === roleOption}
+                        onChange={(event) =>
+                          updateField("role", event.target.value as Role)
+                        }
+                        required
+                        className="peer sr-only"
+                      />
+                      <span className="flex rounded-2xl border border-[#D7DDE5] bg-white px-5 py-4 text-left text-[14px] font-medium text-[#111827] transition-all duration-200 hover:border-[#B6DFFF] hover:bg-[#FAFCFF] peer-checked:border-[#B6DFFF] peer-checked:bg-[#EEF8FF] peer-checked:text-[#49B1F8] peer-focus-visible:ring-2 peer-focus-visible:ring-[#49B1F8] peer-focus-visible:ring-offset-2">
+                        {roleOption}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              <label className="block space-y-2">
+                <span className="text-sm font-medium text-[#111827]">ФИО</span>
+                <input
+                  type="text"
+                  name="fullName"
+                  autoComplete="name"
+                  required
+                  placeholder="Имя Фамилия"
+                  value={form.fullName}
+                  onChange={(event) =>
+                    updateField("fullName", event.target.value)
+                  }
+                  className="h-14 w-full rounded-2xl border border-[#D7DDE5] bg-[#FCFCFD] px-4 text-base text-[#111827] shadow-[0_10px_30px_rgba(17,24,39,0.04)] outline-none transition focus:border-[#49B1F8] focus:bg-white focus:ring-4 focus:ring-[#49B1F8]/20"
+                />
+              </label>
+
+              <label className="block space-y-2">
+                <span className="text-sm font-medium text-[#111827]">
+                  Номер телефона
+                </span>
+                <input
+                  type="tel"
+                  name="phone"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  placeholder="+7 777 777 77 77"
+                  required
+                  value={form.phone}
+                  onChange={(event) => updateField("phone", event.target.value)}
+                  className="h-14 w-full rounded-2xl border border-[#D7DDE5] bg-[#FCFCFD] px-4 text-base text-[#111827] shadow-[0_10px_30px_rgba(17,24,39,0.04)] outline-none transition placeholder:text-[#9CA3AF] focus:border-[#49B1F8] focus:bg-white focus:ring-4 focus:ring-[#49B1F8]/20"
+                />
+              </label>
+
+              <label className="block space-y-2">
+                <span className="text-sm font-medium text-[#111827]">
+                  Специальность
+                </span>
+                <input
+                  type="text"
+                  name="specialty"
+                  placeholder="Медицина, IT, бизнес..."
+                  required
+                  value={form.specialty}
+                  onChange={(event) =>
+                    updateField("specialty", event.target.value)
+                  }
+                  className="h-14 w-full rounded-2xl border border-[#D7DDE5] bg-[#FCFCFD] px-4 text-base text-[#111827] shadow-[0_10px_30px_rgba(17,24,39,0.04)] outline-none transition placeholder:text-[#9CA3AF] focus:border-[#49B1F8] focus:bg-white focus:ring-4 focus:ring-[#49B1F8]/20"
+                />
+              </label>
+
+              <label className="block space-y-2">
+                <span className="text-sm font-medium text-[#111827]">
+                  Годовой бюджет
+                </span>
+                <select
+                  name="yearlyBudget"
+                  required
+                  value={form.yearlyBudget}
+                  onChange={(event) =>
+                    updateField(
+                      "yearlyBudget",
+                      event.target.value as YearlyBudget | "",
+                    )
+                  }
+                  className="h-14 w-full appearance-none rounded-2xl border border-[#D7DDE5] bg-[#FCFCFD] px-4 text-base text-[#111827] shadow-[0_10px_30px_rgba(17,24,39,0.04)] outline-none transition focus:border-[#49B1F8] focus:bg-white focus:ring-4 focus:ring-[#49B1F8]/20"
+                >
+                  <option value="" disabled>
+                    Выберите бюджет
+                  </option>
+                  {budgetOptions.map((budgetOption) => (
+                    <option key={budgetOption} value={budgetOption}>
+                      {budgetOption}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <div className="space-y-3 pt-2">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex h-14 w-full items-center justify-center rounded-2xl border border-[#79C6FA] bg-[#49B1F8] px-5 text-base font-semibold text-white shadow-[0_22px_50px_rgba(73,177,248,0.42)] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#49B1F8] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {isSubmitting ? "Отправляем..." : "Отправить заявку"}
+                </button>
+
+                {status === "error" ? (
+                  <p className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
+                    Не удалось отправить заявку. Попробуйте ещё раз.
+                  </p>
+                ) : null}
+              </div>
+            </form>
+          )}
+        </section>
+      </div>
+    </main>
   );
 }
