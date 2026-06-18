@@ -96,12 +96,21 @@ export default function Home() {
                 style={logoMaskStyle}
               />
             </div>
-            <div className="space-y-2">
-              <h1 className="text-[24px] font-semibold">
-                Заявка на консультацию
+            <div className="space-y-3">
+              <div className="inline-flex items-center rounded-full bg-[#49B1F8] px-3 py-1 text-[13px] font-semibold text-white">
+                24 июня · Алматы
+              </div>
+
+              <h1 className="max-w-2xl text-[24px] font-semibold leading-tight sm:text-[28px]">
+                Семинар с официальными представителями{" "}
+                <span className="text-[#49b1f8]">
+                  Istanbul Medipol University
+                </span>
               </h1>
-              <p className="max-w-2xl text-[14px] text-[#6B7280] sm:text-md">
-                Мы свяжемся с вами и поможем подобрать подходящую специальность.
+
+              <p className="max-w-2xl text-[14px] leading-relaxed text-[#6B7280] sm:text-base">
+                Узнайте всё о поступлении, специальностях, стоимости обучения и
+                задайте свои вопросы представителям университета лично.
               </p>
             </div>
           </div>
