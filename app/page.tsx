@@ -112,6 +112,15 @@ export default function Home() {
                 Узнайте всё о поступлении, специальностях, стоимости обучения и
                 задайте свои вопросы представителям университета лично.
               </p>
+
+              <div className="rounded-xl border border-[#49B1F8] bg-[#49B1F8]/10 px-4 py-3">
+                {" "}
+                <p className="text-[14px] font-medium text-[#49B1F8] sm:text-base">
+                  {" "}
+                  Получите специальную скидку на обучение и подарки от
+                  университета.{" "}
+                </p>{" "}
+              </div>
             </div>
           </div>
 
