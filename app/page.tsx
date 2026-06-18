@@ -2,6 +2,8 @@
 
 import { CSSProperties, FormEvent, useState } from "react";
 
+import { Building2, CalendarDays, Clock3, Gift, MapPin } from "lucide-react";
+
 const roleOptions = ["Родитель", "Будущий студент"] as const;
 const budgetOptions = [
   "До $2 000",
@@ -96,30 +98,84 @@ export default function Home() {
                 style={logoMaskStyle}
               />
             </div>
-            <div className="space-y-3">
-              <div className="inline-flex items-center rounded-full bg-[#49B1F8] px-3 py-1 text-[13px] font-semibold text-white">
-                24 июня · Алматы
+
+            <div className="space-y-5">
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#49B1F8] px-3 py-1.5 text-[13px] font-semibold text-white">
+                  <CalendarDays className="size-4" />
+                  24 июня · Алматы
+                </div>
+
+                <h1 className="max-w-2xl text-[24px] font-semibold leading-tight text-[#111827] sm:text-[28px]">
+                  Семинар с официальными представителями{" "}
+                  <span className="text-[#49B1F8]">
+                    Istanbul Medipol University
+                  </span>
+                </h1>
+
+                <p className="max-w-2xl text-[14px] leading-relaxed text-[#6B7280] sm:text-base">
+                  Узнайте всё о поступлении, специальностях и стоимости
+                  обучения, а также задайте свои вопросы представителям
+                  университета лично.
+                </p>
               </div>
 
-              <h1 className="max-w-2xl text-[24px] font-semibold leading-tight sm:text-[28px]">
-                Семинар с официальными представителями{" "}
-                <span className="text-[#49b1f8]">
-                  Istanbul Medipol University
-                </span>
-              </h1>
+              <div className="grid max-w-2xl gap-3 sm:grid-cols-3">
+                <div className="flex items-center gap-3 rounded-xl border border-[#E5E7EB] bg-white px-4 py-3">
+                  <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#49B1F8]/10 text-[#49B1F8]">
+                    <Clock3 className="size-4" />
+                  </div>
 
-              <p className="max-w-2xl text-[14px] leading-relaxed text-[#6B7280] sm:text-base">
-                Узнайте всё о поступлении, специальностях, стоимости обучения и
-                задайте свои вопросы представителям университета лично.
-              </p>
+                  <div>
+                    <p className="text-[12px] text-[#9CA3AF]">Время</p>
+                    <p className="text-[14px] font-semibold text-[#111827]">
+                      17:30
+                    </p>
+                  </div>
+                </div>
 
-              <div className="rounded-xl border border-[#49B1F8] bg-[#49B1F8]/10 px-4 py-3">
-                {" "}
-                <p className="text-[14px] font-medium text-[#49B1F8] sm:text-base">
-                  {" "}
-                  Получите специальную скидку на обучение и подарки от
-                  университета.{" "}
-                </p>{" "}
+                <div className="flex items-center gap-3 rounded-xl border border-[#E5E7EB] bg-white px-4 py-3">
+                  <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#49B1F8]/10 text-[#49B1F8]">
+                    <Building2 className="size-4" />
+                  </div>
+
+                  <div>
+                    <p className="text-[12px] text-[#9CA3AF]">Место</p>
+                    <p className="text-[14px] font-semibold text-[#111827]">
+                      Kazakhstan Hotel
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 rounded-xl border border-[#E5E7EB] bg-white px-4 py-3">
+                  <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#49B1F8]/10 text-[#49B1F8]">
+                    <MapPin className="size-4" />
+                  </div>
+
+                  <div>
+                    <p className="text-[12px] text-[#9CA3AF]">Зал</p>
+                    <p className="text-[14px] font-semibold text-[#111827]">
+                      Elegant Conference Hall
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex max-w-2xl items-start gap-3 rounded-xl border border-[#49B1F8]/40 bg-[#49B1F8]/10 px-4 py-3.5">
+                <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#49B1F8] text-white">
+                  <Gift className="size-4" />
+                </div>
+
+                <div>
+                  <p className="text-[14px] font-semibold text-[#268FD6] sm:text-base">
+                    Специальное предложение для участников
+                  </p>
+
+                  <p className="mt-0.5 text-[13px] leading-relaxed text-[#4B5563] sm:text-[14px]">
+                    Получите специальную скидку на обучение и подарки от
+                    университета.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
